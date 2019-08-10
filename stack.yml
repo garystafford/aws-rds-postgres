@@ -1,0 +1,42 @@
+# docker stack deploy -c stack.yml postgres
+# docker stack ps postgres --no-trunc
+
+version: "3.7"
+services:
+  postgres:
+    image: postgres:11.4
+    environment:
+      POSTGRES_USER: masteruser
+      POSTGRES_PASSWORD: 5up3r53cr3tPa55w0rd
+      POSTGRES_DB: pagila
+    ports:
+      - "5432:5432/tcp"
+    networks:
+      - demo-net
+    deploy:
+      restart_policy:
+        condition: on-failure
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8180:8080/tcp"
+    networks:
+      - demo-net
+    deploy:
+      restart_policy:
+        condition: on-failure
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: SuperSecret
+    ports:
+      - "81:80/tcp"
+    networks:
+      - demo-net
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+networks:
+  demo-net:
