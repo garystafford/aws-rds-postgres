@@ -1,14 +1,4 @@
 ```bash
-aws rds create-db-instance-read-replica \
-    --db-instance-identifier demo-db-replica \
-    --source-db-instance-identifier demo-db
-```
-```txt
-demo_admin
-Qi5XQYcMJ42j4Mh
-```
-
-```bash
 aws cloudformation validate-template \
   --template-body file://cfn-templates/rds.template
 
