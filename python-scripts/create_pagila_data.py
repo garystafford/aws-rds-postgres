@@ -20,8 +20,7 @@ def set_connection(section):
         global conn
         conn = psycopg2.connect(**params)
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-        conn.close()
+        print(set_connection.__name__, error)
         exit(1)
 
 
@@ -37,9 +36,10 @@ def db_info():
                 curs.execute('SELECT version()')
                 db_version = curs.fetchone()
                 print('PostgreSQL database version:', db_version)
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-        conn.close()
+    except (psycopg2.OperationalError, psycopg2.DatabaseError) as error:
+        print(db_info.__name__, error)
+        close_conn()
+        exit(1)
 
 
 def create_pagila_db():
@@ -55,9 +55,10 @@ def create_pagila_db():
                 curs.execute(open("../sql-scripts/pagila-insert-data.sql", "r").read())  # DML
                 conn.commit()
                 print('Pagila scripts complete.')
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-        conn.close()
+    except (psycopg2.OperationalError, psycopg2.DatabaseError, FileNotFoundError) as error:
+        print(create_pagila_db.__name__, error)
+        close_conn()
+        exit(1)
 
 
 def get_table_count():
@@ -78,9 +79,10 @@ def get_table_count():
                 table_count = curs.fetchone()[0]  # returns tuple (28,)
                 print("Number of database tables: ", table_count)
                 assert table_count == 28, "Incorrect table count!"
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-        conn.close()
+    except (psycopg2.OperationalError, psycopg2.DatabaseError) as error:
+        print(get_table_count.__name__, error)
+        close_conn()
+        exit(1)
 
 
 def close_conn():
@@ -93,7 +95,7 @@ def close_conn():
 
 
 def main():
-    set_connection('master')
+    set_connection('instance')
     db_info()
     create_pagila_db()
     get_table_count()

@@ -20,8 +20,7 @@ def set_connection(section):
         global conn
         conn = psycopg2.connect(**params)
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-        conn.close()
+        print(set_connection.__name__, error)
         exit(1)
 
 
@@ -37,10 +36,10 @@ def get_movies(return_count=100):
                 curs.execute("""
                     SELECT title AS title, name AS genre, release_year AS released
                     FROM film f
-                    JOIN film_category fc
-                        ON f.film_id = fc.film_id
-                    JOIN category c
-                        ON fc.category_id = c.category_id
+                             JOIN film_category fc
+                                  ON f.film_id = fc.film_id
+                             JOIN category c
+                                  ON fc.category_id = c.category_id
                     ORDER BY title
                     LIMIT %s;
                 """, (return_count,))
@@ -52,9 +51,10 @@ def get_movies(return_count=100):
 
                 print("The number of cities displayed: ", curs.rowcount)
                 assert curs.rowcount == return_count, "Incorrect number of cities returned!"
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-        conn.close()
+    except (psycopg2.OperationalError, psycopg2.DatabaseError) as error:
+        print(get_movies.__name__, error)
+    finally:
+        close_conn()
 
 
 def close_conn():
@@ -70,7 +70,6 @@ def close_conn():
 def main():
     set_connection('master')
     get_movies(10)
-    close_conn()
 
 
 if __name__ == '__main__':
