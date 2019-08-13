@@ -95,7 +95,7 @@ def close_conn():
 
 
 def main():
-    set_connection('instance')
+    set_connection('master')
     db_info()
     create_pagila_db()
     get_table_count()
