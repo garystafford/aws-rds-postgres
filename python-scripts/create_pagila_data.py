@@ -16,9 +16,9 @@ def set_connection(section):
 
     try:
         params = config(filename='database.ini', section=section)
-        print('Connecting to the PostgreSQL database...')
         global conn
         conn = psycopg2.connect(**params)
+        print('Connection to database created')
     except (Exception, psycopg2.DatabaseError) as error:
         print(set_connection.__name__, error)
         exit(1)
@@ -35,7 +35,7 @@ def db_info():
             with conn.cursor() as curs:
                 curs.execute('SELECT version()')
                 db_version = curs.fetchone()
-                print('PostgreSQL database version:', db_version)
+                return db_version
     except (psycopg2.OperationalError, psycopg2.DatabaseError) as error:
         print(db_info.__name__, error)
         close_conn()
@@ -54,7 +54,7 @@ def create_pagila_db():
                 curs.execute(open("../sql-scripts/pagila-schema.sql", "r").read())  # DDL
                 curs.execute(open("../sql-scripts/pagila-insert-data.sql", "r").read())  # DML
                 conn.commit()
-                print('Pagila scripts complete.')
+                print('Pagila SQL scripts completed')
     except (psycopg2.OperationalError, psycopg2.DatabaseError, FileNotFoundError) as error:
         print(create_pagila_db.__name__, error)
         close_conn()
@@ -78,7 +78,7 @@ def get_table_count():
 
                 table_count = curs.fetchone()[0]  # returns tuple (28,)
                 print("Number of database tables: ", table_count)
-                assert table_count == 28, "Incorrect table count!"
+                return table_count
     except (psycopg2.OperationalError, psycopg2.DatabaseError) as error:
         print(get_table_count.__name__, error)
         close_conn()
@@ -95,9 +95,9 @@ def close_conn():
 
 
 def main():
-    set_connection('master')
-    db_info()
-    create_pagila_db()
+    set_connection('docker')
+    print(db_info())
+    print(create_pagila_db())
     get_table_count()
     close_conn()
 
