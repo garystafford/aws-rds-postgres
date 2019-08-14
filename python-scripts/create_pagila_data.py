@@ -19,8 +19,8 @@ def set_connection(section):
         global conn
         conn = psycopg2.connect(**params)
         print('Connection to database created')
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(set_connection.__name__, error)
+    except (Exception, psycopg2.DatabaseError) as err:
+        print(set_connection.__name__, err)
         exit(1)
 
 
@@ -36,8 +36,8 @@ def db_info():
                 curs.execute('SELECT version()')
                 db_version = curs.fetchone()
                 return db_version
-    except (psycopg2.OperationalError, psycopg2.DatabaseError) as error:
-        print(db_info.__name__, error)
+    except (psycopg2.OperationalError, psycopg2.DatabaseError) as err:
+        print(db_info.__name__, err)
         close_conn()
         exit(1)
 
@@ -51,12 +51,12 @@ def create_pagila_db():
         global conn
         with conn:
             with conn.cursor() as curs:
-                curs.execute(open("../sql-scripts/pagila-schema.sql", "r").read())  # DDL
-                curs.execute(open("../sql-scripts/pagila-insert-data.sql", "r").read())  # DML
+                curs.execute(open("../sql-scripts/pagila-schema.sql", "r").read())
+                curs.execute(open("../sql-scripts/pagila-insert-data.sql", "r").read())
                 conn.commit()
-                print('Pagila SQL scripts completed')
-    except (psycopg2.OperationalError, psycopg2.DatabaseError, FileNotFoundError) as error:
-        print(create_pagila_db.__name__, error)
+                print('Pagila SQL scripts executed')
+    except (psycopg2.OperationalError, psycopg2.DatabaseError, FileNotFoundError) as err:
+        print(create_pagila_db.__name__, err)
         close_conn()
         exit(1)
 
@@ -77,10 +77,10 @@ def get_table_count():
                 """)
 
                 table_count = curs.fetchone()[0]  # returns tuple (28,)
-                print("Number of database tables: ", table_count)
                 return table_count
-    except (psycopg2.OperationalError, psycopg2.DatabaseError) as error:
-        print(get_table_count.__name__, error)
+    except (psycopg2.OperationalError, psycopg2.DatabaseError) as err:
+        print(get_table_count.__name__, err)
+
         close_conn()
         exit(1)
 
@@ -91,14 +91,14 @@ def close_conn():
     """
     if conn is not None:
         conn.close()
-        print('Database connection closed.')
+        print('Database connection closed')
 
 
 def main():
     set_connection('docker')
-    print(db_info())
-    print(create_pagila_db())
-    get_table_count()
+    print('Database info:', db_info())
+    create_pagila_db()
+    print('Number of database tables:', get_table_count())
     close_conn()
 
 

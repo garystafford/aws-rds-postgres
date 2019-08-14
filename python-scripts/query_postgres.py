@@ -16,11 +16,11 @@ def set_connection(section):
 
     try:
         params = config(filename='database.ini', section=section)
-        print('Connecting to the PostgreSQL database...')
         global conn
         conn = psycopg2.connect(**params)
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(set_connection.__name__, error)
+        print('Connection to database created')
+    except (Exception, psycopg2.DatabaseError) as err:
+        print(set_connection.__name__, err)
         exit(1)
 
 
@@ -44,15 +44,15 @@ def get_movies(return_count=100):
                     LIMIT %s;
                 """, (return_count,))
 
+                movies = []
                 row = curs.fetchone()
                 while row is not None:
-                    print(row)
+                    movies.append(row)
                     row = curs.fetchone()
 
-                print("The number of cities displayed: ", curs.rowcount)
-                assert curs.rowcount == return_count, "Incorrect number of cities returned!"
-    except (psycopg2.OperationalError, psycopg2.DatabaseError) as error:
-        print(get_movies.__name__, error)
+                return movies
+    except (psycopg2.OperationalError, psycopg2.DatabaseError) as err:
+        print(get_movies.__name__, err)
     finally:
         close_conn()
 
@@ -61,15 +61,16 @@ def close_conn():
     """
     Closes database connection
     """
-
     if conn is not None:
         conn.close()
-        print('Database connection closed.')
+        print('Database connection closed')
 
 
 def main():
-    set_connection('master')
-    get_movies(10)
+    set_connection('docker')
+    for movie in get_movies(10):
+        print('Movie: {0}, Genre: {1}, Released: {2}'
+              .format(movie[0], movie[1], movie[2]))
 
 
 if __name__ == '__main__':
