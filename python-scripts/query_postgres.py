@@ -67,7 +67,7 @@ def close_conn():
 
 
 def main():
-    set_connection('docker')
+    set_connection('master')
     for movie in get_movies(10):
         print('Movie: {0}, Genre: {1}, Released: {2}'
               .format(movie[0], movie[1], movie[2]))

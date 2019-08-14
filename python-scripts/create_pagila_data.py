@@ -95,7 +95,7 @@ def close_conn():
 
 
 def main():
-    set_connection('docker')
+    set_connection('master')
     print('Database info:', db_info())
     create_pagila_db()
     print('Number of database tables:', get_table_count())
