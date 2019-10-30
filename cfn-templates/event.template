@@ -14,6 +14,7 @@ Resources:
           Protocol: sms
       TopicName: "RDSAlertTopic"
   MyEventSubscription:
+    Type: AWS::RDS::EventSubscription
     Properties:
       Enabled: true
       EventCategories:
@@ -27,4 +28,3 @@ Resources:
       SnsTopicArn:
         Ref: MyDBSNSTopic
       SourceType: db-instance
-    Type: AWS::RDS::EventSubscription
