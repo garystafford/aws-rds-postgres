@@ -1,16 +1,5 @@
----
-AWSTemplateFormatVersion: 2010-09-09
-Description: "RDS PostgreSQL master with single read replica"
-Outputs:
-  EndpointDB:
-    Description: "Endpoint of the newly created RDS master"
-    Value: !GetAtt MyDB.Endpoint.Address
-  EndpointRR:
-    Description: "Endpoint of the newly created RDS replica"
-    Value: !GetAtt MyReadReplica.Endpoint.Address
-  PortDB:
-    Description: "Port of the newly created RDS master and replica"
-    Value: !GetAtt MyDB.Endpoint.Port
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "This template deploys a RDS PostgreSQL master with single read replica"
 Parameters:
   DBInstanceIdentifier:
     Type: String
@@ -87,3 +76,13 @@ Resources:
         - Key: Name
           Value: "Demo RDS PostgreSQL Read Replica"
     Type: AWS::RDS::DBInstance
+Outputs:
+  EndpointDB:
+    Description: "Endpoint of the newly created RDS master"
+    Value: !GetAtt MyDB.Endpoint.Address
+  EndpointRR:
+    Description: "Endpoint of the newly created RDS replica"
+    Value: !GetAtt MyReadReplica.Endpoint.Address
+  PortDB:
+    Description: "Port of the newly created RDS master and replica"
+    Value: !GetAtt MyDB.Endpoint.Port

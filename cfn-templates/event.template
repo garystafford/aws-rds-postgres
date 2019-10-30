@@ -1,6 +1,5 @@
----
-AWSTemplateFormatVersion: 2010-09-09
-Description: "RDS EventSubscription/SNS/SMS Alerts"
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "This template deploys a RDS EventSubscription/SNS/SMS Alerts"
 Parameters:
   DBAlertPhoneNumber:
     Type: String
@@ -27,8 +26,5 @@ Resources:
         - recovery
       SnsTopicArn:
         Ref: MyDBSNSTopic
-#      SourceIds:
-#        - Ref: MyDB
-#        - Ref: MyReadReplica
       SourceType: db-instance
     Type: AWS::RDS::EventSubscription

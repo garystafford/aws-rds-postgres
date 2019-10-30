@@ -1,8 +1,8 @@
-Description:
-  This template deploys a VPC with a pair of subnets spread
+AWSTemplateFormatVersion: "2010-09-09"
+Description: This template deploys a VPC with a pair of subnets spread
   across two Availability Zones. It deploys an Internet Gateway,
   with a default route on the public subnets. It deploys an RDS
-  PostgreSQL master and single read replica databaes.
+  PostgreSQL master and single read replica database.
 Parameters:
   VpcCIDR:
     Description: IP range (CIDR notation) for this VPC
@@ -78,7 +78,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      AvailabilityZone: !Select [ 0, !GetAZs "" ]
       CidrBlock: !Ref SubnetMasterCIDR
       MapPublicIpOnLaunch: true
       Tags:
@@ -88,7 +88,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      AvailabilityZone: !Select [ 1, !GetAZs "" ]
       CidrBlock: !Ref SubnetReplicaCIDR
       MapPublicIpOnLaunch: true
       Tags:
