@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import psycopg2
 
 from db_config import config
@@ -66,8 +67,20 @@ def close_conn():
         print('Database connection closed')
 
 
+def parse_args():
+    """
+    Read in command-line parameters
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-i", "--instance", default="master", help="Database instance")
+
+    return parser.parse_args()
+
+
 def main():
-    set_connection('master')
+    args = parse_args()
+    set_connection(args.instance)
+
     for movie in get_movies(10):
         print('Movie: {0}, Genre: {1}, Released: {2}'
               .format(movie[0], movie[1], movie[2]))

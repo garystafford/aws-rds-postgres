@@ -26,10 +26,10 @@ aws rds describe-db-instances \
 pip3 install --upgrade -r requirements.txt
 
 cd python-scripts
-time python3 ./create_pagila_data.py
+time python3 ./create_pagila_data.py --instance master
 # python3 ./create_pagila_data.py  0.11s user 0.06s system 2% cpu 7.341 total
 
-time python3 ./query_postgres.py
+time python3 ./query_postgres.py --instance master
 
 # https://www.pgadmin.org/download/pgadmin-4-container/
 docker pull dpage/pgadmin4
