@@ -12,8 +12,9 @@ aws cloudformation create-stack \
   --template-body file://cfn-templates/rds.template \
   --stack-name RDSDemoStack
 
-aws cloudformation update-stack \
-  --template-body file://cfn-templates/rds.template \
+# alternative
+aws cloudformation create-stack \
+  --template-body file://cfn-templates/rds_only.template \
   --stack-name RDSDemoStack
 
 aws cloudformation delete-stack \

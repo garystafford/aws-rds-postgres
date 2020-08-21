@@ -3,22 +3,22 @@ Description: "This template deploys a RDS PostgreSQL master with single read rep
 Parameters:
   DBInstanceIdentifier:
     Type: String
-    Default: "demo-instance"
+    Default: "pagila-instance"
   ReplicaInstanceIdentifier:
     Type: String
-    Default: "demo-replica"
+    Default: "pagila-replica"
   DBEngine:
     Type: String
     Default: "postgres"
   DBEngineVersion:
     Type: String
-    Default: "11.4"
+    Default: "12.3"
   DBSourceRegion:
     Type: String
     Default: "us-east-1"
   DBInstanceClass:
     Type: String
-    Default: "db.t3.small"
+    Default: "db.t3.medium"
   DBStorageType:
     Type: String
     Default: "gp2"
@@ -36,7 +36,8 @@ Parameters:
     Default: "{{resolve:ssm-secure:/rds_demo/master_password:1}}"
     NoEcho: True
 Resources:
-  MyDB:
+  PagilaMaster:
+    Type: AWS::RDS::DBInstance
     Properties:
       DBInstanceIdentifier:
         Ref: DBInstanceIdentifier
@@ -57,10 +58,10 @@ Resources:
       MasterUserPassword:
         Ref: DBPassword
       Tags:
-        - Key: Name
-          Value: "Demo RDS PostgreSQL Master"
+        - Key: Project
+          Value: "Demo of RDS PostgreSQL"
+  PagilaReadReplica:
     Type: AWS::RDS::DBInstance
-  MyReadReplica:
     Properties:
       DBInstanceIdentifier:
         Ref: ReplicaInstanceIdentifier
@@ -69,20 +70,33 @@ Resources:
       DBInstanceClass:
         Ref: DBInstanceClass
       SourceDBInstanceIdentifier:
-        Ref: MyDB
+        Ref: PagilaMaster
       SourceRegion:
         Ref: DBSourceRegion
       Tags:
-        - Key: Name
-          Value: "Demo RDS PostgreSQL Read Replica"
-    Type: AWS::RDS::DBInstance
+        - Key: Project
+          Value: "Demo of RDS PostgreSQL"
 Outputs:
-  EndpointDB:
-    Description: "Endpoint of the newly created RDS master"
-    Value: !GetAtt MyDB.Endpoint.Address
-  EndpointRR:
-    Description: "Endpoint of the newly created RDS replica"
-    Value: !GetAtt MyReadReplica.Endpoint.Address
+  EndpointMaster:
+    Description: "Endpoint of the newly created RDS PostgreSQL master"
+    Value: !GetAtt PagilaMaster.Endpoint.Address
+  PortReadReplica:
+    Description: "Endpoint of the newly created RDS PostgreSQL replica"
+    Value: !GetAtt PagilaReadReplica.Endpoint.Address
   PortDB:
-    Description: "Port of the newly created RDS master and replica"
-    Value: !GetAtt MyDB.Endpoint.Port
+    Description: "Port of the newly created RDS PostgreSQL master and replica"
+    Value: !GetAtt PagilaMaster.Endpoint.Port
+  JdbcConnString:
+    Description: "JDBC connection string of newly created RDS PostgreSQL master, w/o password"
+    Value: !Join
+      - ""
+      - - "jdbc:postgresql://"
+        - !GetAtt PagilaMaster.Endpoint.Address
+        - ":"
+        - !GetAtt PagilaMaster.Endpoint.Port
+        - "/"
+        - "{{resolve:ssm:/rds_demo/db_name:1}}"
+        - "?user="
+        - "{{resolve:ssm:/rds_demo/master_username:1}}"
+        - "&password="
+        - ""
