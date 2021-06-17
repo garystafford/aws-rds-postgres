@@ -1,10 +1,10 @@
 # docker stack deploy -c stack.yml postgres
 # docker stack ps postgres --no-trunc
 
-version: "3.7"
+version: "3.9"
 services:
   postgres:
-    image: postgres:11.4
+    image: postgres:13.3
     environment:
       POSTGRES_USER: masteruser
       POSTGRES_PASSWORD: 5up3r53cr3tPa55w0rd

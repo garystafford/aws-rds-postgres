@@ -1,4 +1,6 @@
 ```bash
+sh ./parameter_store_values.sh
+
 aws cloudformation validate-template \
   --template-body file://cfn-templates/rds.template
 
@@ -23,11 +25,16 @@ aws cloudformation delete-stack \
 aws rds describe-db-instances \
   --db-instance-identifier demo-instance
 
-pip3 install --upgrade -r requirements.txt
+# open port 5432 to your ip address /32 CIDR in the VPC security group
 
 cd python-scripts
+
+python3 -m pip install -r ./requirements.txt
+
 time python3 ./create_pagila_data.py --instance master
 # python3 ./create_pagila_data.py  0.11s user 0.06s system 2% cpu 7.341 total
+
+time python3 ./unit_tests.py
 
 time python3 ./query_postgres.py --instance master
 

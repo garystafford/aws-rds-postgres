@@ -30,7 +30,7 @@ Parameters:
     Default: "postgres"
   DBEngineVersion:
     Type: String
-    Default: "12.3"
+    Default: "13.2"
   DBSourceRegion:
     Type: String
     Default: "us-east-1"

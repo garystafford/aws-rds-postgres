@@ -27,7 +27,7 @@ aws ssm put-parameter \
 aws ssm put-parameter \
   --name /rds_demo/alert_phone \
   --type String \
-  --value "your_mobile_phone_number" \
+  --value "+11234567890" \
   --description "RDS alert SMS phone number" \
   --overwrite
 

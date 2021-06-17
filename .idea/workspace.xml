@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e405af8f-1bde-4ef2-9164-584457f65d95" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notes.md" beforeDir="false" afterPath="$PROJECT_DIR$/notes.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/python-scripts/create_pagila_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/python-scripts/create_pagila_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/python-scripts/database.ini" beforeDir="false" afterPath="$PROJECT_DIR$/python-scripts/database.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/python-scripts/query_postgres.py" beforeDir="false" afterPath="$PROJECT_DIR$/python-scripts/query_postgres.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/python-scripts/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/python-scripts/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +39,10 @@
       <updated>1588195797360</updated>
       <workItem from="1588195799129" duration="2611000" />
       <workItem from="1591131113196" duration="9000" />
-      <workItem from="1597980220735" duration="1106000" />
+      <workItem from="1597980220735" duration="3943000" />
+      <workItem from="1598460862508" duration="593000" />
+      <workItem from="1598539036561" duration="127000" />
+      <workItem from="1598560021391" duration="793000" />
     </task>
     <servers />
   </component>
