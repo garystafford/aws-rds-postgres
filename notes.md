@@ -1,4 +1,7 @@
+# My project notes
+
 ```bash
+# change /rds_demo/alert_phone value first!
 sh ./parameter_store_values.sh
 
 aws cloudformation validate-template \
@@ -32,8 +35,8 @@ cd python-scripts
 python3 -m pip install -r ./requirements.txt
 
 time python3 ./create_pagila_data.py --instance master
-# python3 ./create_pagila_data.py  0.11s user 0.06s system 2% cpu 7.341 total
 
+# change cpd.set_connection to docker or master (AWS) in 2 places first!
 time python3 ./unit_tests.py
 
 time python3 ./query_postgres.py --instance master
